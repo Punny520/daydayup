@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <script src="js/axios.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="../static/layui/layui.js"></script>
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+</head>
+<body>
+    <p>注册界面</p>
+    <form id="registerForm">
+        账号：<input type="text" name="username"> <br>
+        密码：<input type="password" name="password"> <br>
+        重复密码：<input type="password" name="confirmPassword"> <br>
+        <input type="submit" value="注册">
+    </form>
+</body>
+<script>
+    document.getElementById("registerForm").addEventListener('submit',function (e){
+        e.preventDefault();
+        const formData = new FormData(this);
+        const username = formData.get("username");
+        const password = formData.get("password");
+        const confirmPassword = formData.get("confirmPassword");
+        console.log(username)
+        console.log(password)
+        console.log(confirmPassword)
+        //数据规范验证
+        if(password != confirmPassword){
+            alert("两次密码不同");
+            return;
+        }
+        formData.delete("confirmPassword");
+        axios.post('/user',formData).then((res)=>{
+            alert(res.data.msg);
+            if(res.data.code == 1){
+                window.location.href = '/login';
+            }else return;
+        })
+    })
+</script>
+</html>
