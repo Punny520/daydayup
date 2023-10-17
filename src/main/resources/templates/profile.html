@@ -7,5 +7,36 @@
 </head>
 <body>
     <p>个人资料</p>
+    <div id="app">
+        <p>欢迎{{user.username}}</p>
+        <p>你的id为{{user.id}}</p>
+    </div>
 </body>
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                user: null,
+            },
+            mounted(){//当页面元素加载完成后立马执行
+                const token = localStorage.getItem('jwtToken');
+                if(token == null){
+                    alert("您未登录，请登录后查看");
+                    window.location.href = '/login';
+                }
+
+                const headers = {//设置请求头
+                    'token': token
+                }
+                axios.post("/user/proflie",null,{headers}).then((res)=>{//发送请求验证是否登录
+                    alert(res.data.msg);
+                    if(res.data.code == 0){
+                        window.location.href = '/login';
+                    }else{
+                        this.user = res.data.data;
+                    }
+                })
+            }
+        })
+    </script>
 </html>

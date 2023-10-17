@@ -25,16 +25,23 @@
         const username = formData.get("username");
         const password = formData.get("password");
         const confirmPassword = formData.get("confirmPassword");
-        console.log(username)
-        console.log(password)
-        console.log(confirmPassword)
+        // console.log(username)
+        // console.log(password)
+        // console.log(confirmPassword)
         //数据规范验证
+
+        const regex = /^[a-zA-Z0-9]{6,20}$/;
+        if(!regex.test(username)||!regex.test(password)){
+            alert("用户名或密码无效。(必须为字母或数组，且长度介于6~20之间)");
+            return;
+        }
+
         if(password != confirmPassword){
             alert("两次密码不同");
             return;
         }
         formData.delete("confirmPassword");
-        axios.post('/user',formData).then((res)=>{
+        axios.post('/user/register',formData).then((res)=>{
             alert(res.data.msg);
             if(res.data.code == 1){
                 window.location.href = '/login';

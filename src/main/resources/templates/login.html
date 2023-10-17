@@ -12,7 +12,7 @@
 <body>
     <p>登录界面</p>
     <form id="loginForm">
-        账号： <input type="text" name="username">
+        账号： <input type="text" name="username"> <br>
         密码： <input type="password" name="password">
         <input type="submit" value="登录">
     </form>
@@ -24,11 +24,17 @@
         const username = formData.get("username")
         const password = formData.get("password")
         //数据格式验证
-        console.log(username)
-        console.log(password)
-        axios.get('/user',formData).then((res)=>{
+        const regex = /^[a-zA-Z0-9]{6,20}$/;
+        if(!regex.test(username)||!regex.test(password)){
+            alert("用户名或密码无效。(必须为字母或数组，且长度介于6~20之间)");
+            return;
+        }
+        // console.log(username)
+        // console.log(password)
+        axios.post('/user/login',formData).then((res)=>{
             alert(res.data.msg);
             if(res.data.code == 1){
+                localStorage.setItem('jwtToken',res.data.data);//讲返回的token存在浏览器中
                 window.location.href = '/profile';
             }else return;
         })
