@@ -3,8 +3,12 @@ package com.punny.daydayup.controller;
 import com.punny.daydayup.pojo.Result;
 import com.punny.daydayup.pojo.User;
 import com.punny.daydayup.service.UserService;
+import com.punny.daydayup.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -36,8 +40,16 @@ public class UserController {
         return res;
     }
 
+    /**
+     * 个人资料Controller
+     * @param request
+     * @return
+     */
     @RequestMapping("/profile")
-    public Result userProfile(){
-
+    public Result userProfile(HttpServletRequest request){
+        String token = request.getHeader("token");//获取请求头token
+        Map<String, Object> claims;
+        claims = JwtUtils.JwtParse(token);
+        return Result.success("token解析成功",claims);
     }
 }
