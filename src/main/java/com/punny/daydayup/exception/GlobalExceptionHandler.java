@@ -12,6 +12,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result ex(Exception ex){
         ex.printStackTrace();
-        return Result.error("error!",null);
+        return Result.error("error!!!",null);
     }
 }
